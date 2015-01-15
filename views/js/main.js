@@ -383,7 +383,6 @@ var pizzaElementGenerator = function(i) {
   pizzaImageContainer.appendChild(pizzaImage);
   pizzaContainer.appendChild(pizzaImageContainer);
 
-
   pizzaDescriptionContainer.classList.add("col-md-6");
 
   pizzaName = document.createElement("h4");
@@ -503,9 +502,12 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+
+  var magicNumber = document.body.scrollTop / 1250;
+
+  for (var i = 0, len = items.length; i < len; i++) {
+    var phase = Math.sin(magicNumber + (i % 5));
+    items[i].style.left = items[i].basicLeft + 100 * phase + 'px'; 
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -517,7 +519,6 @@ function updatePositions() {
     logAverageFrame(timesToUpdatePosition);
   }
 }
-
 // runs updatePositions on scroll
 window.addEventListener('scroll', updatePositions);
 
