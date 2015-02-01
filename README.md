@@ -54,4 +54,16 @@ Pizza page spicific FPS optimizations
 - Rewrote for loop for pizza sizes (calculations are now done outside of loop)
 
 - Cleaned up generic code erros (using JSHint & Brackets)
-- removed unnecessary function requestAnimationFrame & unused variable currentScrollY
+- Removed unnecessary function requestAnimationFrame & unused variable currentScrollY
+- Reduced amount of pizzas by spacing them further apart
+
+
+Resources Used
+==============
+
+- Piazza forum help (Special Thanks to George Li for helpful comments)
+- <a href="http://www.cssnewbie.com/css-import-rule/#.VLgXPSvF-aU">CSS Newbie</a>
+- <a href="http://www.webreference.com/programming/javascript/jkm3/index.html">Webreference Javascript Optimization Tips</a>
+- <a href="http://kraken.io">Kraken.io</a>
+- <a href="http://jshint.com">JSHint.com</a>
+- <a href="http://brackets.io">Brackets.io</a>
