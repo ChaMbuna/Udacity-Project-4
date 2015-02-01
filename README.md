@@ -1,65 +1,57 @@
-## Website Performance Optimization portfolio project
+Cameron Pittman: Portfolio Website Optimization
+===============================================
 
-Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
+Goal
+----
+The PageSpeed score of 90 is for index.html (both mobile and laptop scores should be at least 90).
 
-To get started, check out the repository, inspect the code,
+The frame rate of 60fps should be obtained for the pizza page (views/pizza.html). The file you need to study and change is views/js/main.js.
 
-### Getting started
+The original project is available at <a href="https://github.com/udacity/frontend-nanodegree-mobile-portfolio">https://github.com/udacity/frontend-nanodegree-mobile-portfolio</a>.
 
-Some useful tips to help you get started:
+<a href="https://github.com/udacity/frontend-nanodegree-mobile-portfolio/archive/master.zip">Click here to download the project files</a>.
 
-1. Check out the repository
-1. To inspect the site on your phone, you can run a local server
+All files and links below are to my optimized version meeting the goals stated above.
 
-  ```bash
-  $> cd /path/to/your-project-folder
-  $> python -m SimpleHTTPServer 8080
-  ```
+Launching the website
+---------------------
+You can view the optimized website at <a href="http://chambuna.github.io/">http://chambuna.github.io/</a>
 
-1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to make your local server accessible remotely.
+Alternatively, you can <a href="https://github.com/ChaMbuna/ChaMbuna.github.io/archive/master.zip">download the project files here</a>. Extract the files and open index.html to launch the site from your computer.
 
-  ``` bash
-  $> cd /path/to/your-project-folder
-  $> ngrok 8080
-  ```
 
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
+Optimizations
+=============
 
-Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
+Images
+------
+- Resolution was reduced when unnecessarily large
+- All images are now hosted locally
+- Thumbnails were made where necessary
+- Filesize compressed with Photoshop & Kraken.io
 
-### Optimization Tips and Tricks
-* [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
-* [Analyzing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp.html "analyzing crp")
-* [Optimizing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path.html "optimize the crp!")
-* [Avoiding Rendering Blocking CSS](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css.html "render blocking css")
-* [Optimizing JavaScript](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript.html "javascript")
-* [Measuring with Navigation Timing](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp.html "nav timing api"). We didn't cover the Navigation Timing API in the first two lessons but it's an incredibly useful tool for automated page profiling. I highly recommend reading.
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/eliminate-downloads.html">The fewer the downloads, the better</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer.html">Reduce the size of text</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization.html">Optimize images</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching.html">HTTP caching</a>
+JavaScript
+----------
+- Scripts not critical to build the DOM are loaded asynchronously
+- Moved non-critical scripts to bottom of html
 
-### Customization with Bootstrap
-The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
+CSS
+---
+- CSS for print taken out of the critical rendering path
+- stylsheet minimized and loaded inline
+- unused id & class selectors removed from bootstrap framework
 
-* <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
-* <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
+Fonts
+-----
+- Fonts are loaded with @font-face vs link rel
 
-### Sample Portfolios
 
-Feeling uninspired by the portfolio? Here's a list of cool portfolios I found after a few minutes of Googling.
+Pizza page spicific FPS optimizations
+=====================================
 
-* <a href="http://www.reddit.com/r/webdev/comments/280qkr/would_anybody_like_to_post_their_portfolio_site/">A great discussion about portfolios on reddit</a>
-* <a href="http://ianlunn.co.uk/">http://ianlunn.co.uk/</a>
-* <a href="http://www.adhamdannaway.com/portfolio">http://www.adhamdannaway.com/portfolio</a>
-* <a href="http://www.timboelaars.nl/">http://www.timboelaars.nl/</a>
-* <a href="http://futoryan.prosite.com/">http://futoryan.prosite.com/</a>
-* <a href="http://playonpixels.prosite.com/21591/projects">http://playonpixels.prosite.com/21591/projects</a>
-* <a href="http://colintrenter.prosite.com/">http://colintrenter.prosite.com/</a>
-* <a href="http://calebmorris.prosite.com/">http://calebmorris.prosite.com/</a>
-* <a href="http://www.cullywright.com/">http://www.cullywright.com/</a>
-* <a href="http://yourjustlucky.com/">http://yourjustlucky.com/</a>
-* <a href="http://nicoledominguez.com/portfolio/">http://nicoledominguez.com/portfolio/</a>
-* <a href="http://www.roxannecook.com/">http://www.roxannecook.com/</a>
-* <a href="http://www.84colors.com/portfolio.html">http://www.84colors.com/portfolio.html</a>
+- Scroll-position is now stored in variable outside of loop and no longer calculated for each pizza. (Idea adapted from http://www.webreference.com/programming/javascript/jkm3/index.html)
+- Local function variables used to improve performance. (Idea adapted from http://www.webreference.com/programming/javascript/jkm3/index.html)
+- Rewrote for loop for pizza sizes (calculations are now done outside of loop)
+
+- Cleaned up generic code erros (using JSHint & Brackets)
+- removed unnecessary function requestAnimationFrame & unused variable currentScrollY
