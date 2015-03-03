@@ -372,8 +372,8 @@ var pizzaElementGenerator = function(i) {
   pizzaImage = document.createElement("img");
   pizzaDescriptionContainer = document.createElement("div");
 
-  pizzaContainer.classList.add("randomPizzaContainer");
-  pizzaContainer.style.width = "33.33%";
+  pizzaContainer.classList.add("mediumPizzaContainer");
+// pizzaContainer.style.width = "33.33%";
   pizzaContainer.style.height = "325px";
   pizzaContainer.id = "pizza" + i;                // gives each pizza element a unique id
   pizzaImageContainer.classList.add("col-md-6");
@@ -449,11 +449,13 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
-    var allPizzaContainers = document.getElementsByClassName("randomPizzaContainer");
-  function changePizzaSizes(size) {
-    var pizzaContainerLength = allPizzaContainers.length;
-    var dx = determineDx(allPizzaContainers[0], size);
-    var newwidth = (allPizzaContainers[0].offsetWidth + dx) + 'px';
+    var allPizzaContainers = document.getElementsByClassName("mediumPizzaContainer");
+  function changePizzaSizes (size) {
+    var pizzaContainerLength = allPizzaContainers.length; // count pizzas
+    var dx = determineDx(allPizzaContainers[0], size); // gets and stores size difference
+    var newwidth = (allPizzaContainers[0].offsetWidth + dx) + 'px'; // set appropriate container width
+    
+    // updates all pizza containers to the correct size
     for (var i = 0; i < pizzaContainerLength; i++) {
       allPizzaContainers[i].style.width = newwidth;
     }
@@ -502,14 +504,17 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
 // https://www.igvita.com/slides/2012/devtools-tips-and-tricks/jank-demo.html
-
 // Moves the sliding background pizzas based on scroll position
+// modified for better performance by Maarten Cappaert
 
+// stores the last known scroll position outside of the main function
+// so it does not need to be calculated each time the function runs.
 var lastKnownScrollY = 0;
 function onScroll() {
 	lastKnownScrollY = window.scrollY;
 }
 
+// updates pizza positions
 function updatePositions() {
   requestAnimationFrame(updatePositions);
 
@@ -517,9 +522,9 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   var items = document.querySelectorAll('.mover');
-  var scrollNumber = document.body.scrollTop / 1250;
+  var scrollNumber = document.body.scrollTop / 1250; // used in for loop, assigned outside of it for increased performance
 
-  for (var i = 0, len = items.length; i < len; i++) {
+  for (var i = 0, len = items.length; i < len; i++) { // assigning the length to a variable increases performance
     var phase = Math.sin(scrollNumber + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';   }
 
@@ -537,8 +542,8 @@ function updatePositions() {
 window.addEventListener('scroll', onScroll);
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 6;
-  var s = 400;
+  var cols = 6; // reduced number of columns for extra performance
+  var s = 400; // reduced number of instanced for extra performance
   for (var i = 0; i < 100; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
