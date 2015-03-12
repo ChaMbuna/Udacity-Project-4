@@ -449,9 +449,9 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
-    var allPizzaContainers = document.getElementsByClassName("mediumPizzaContainer");
+  var allPizzaContainers = document.getElementsByClassName("mediumPizzaContainer");
+  var pizzaContainerLength = allPizzaContainers.length; // count pizzas;
   function changePizzaSizes (size) {
-    var pizzaContainerLength = allPizzaContainers.length; // count pizzas
     var dx = determineDx(allPizzaContainers[0], size); // gets and stores size difference
     var newwidth = (allPizzaContainers[0].offsetWidth + dx) + 'px'; // set appropriate container width
     
@@ -510,40 +510,53 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // stores the last known scroll position outside of the main function
 // so it does not need to be calculated each time the function runs.
 var lastKnownScrollY = 0;
+
+// stores trigger used to perform one frame update.
+var scrolling = false;
+
+// requests one scroll from last known scroll position.
 function onScroll() {
 	lastKnownScrollY = window.scrollY;
+    requestScroll();
 }
+
+function requestScroll() {
+  if(!scrolling) {
+    requestAnimationFrame(updatePositions);
+  }
+  scrolling = true;
+}
+
 
 // updates pizza positions
 function updatePositions() {
-  requestAnimationFrame(updatePositions);
+    scrolling = false;
+    frame++;
+    window.performance.mark("mark_start_frame");
 
-  frame++;
-  window.performance.mark("mark_start_frame");
+    var items = document.querySelectorAll('.mover');
+    var scrollNumber = document.body.scrollTop / 1250; // used in for loop, assigned outside of it for increased performance
 
-  var items = document.querySelectorAll('.mover');
-  var scrollNumber = document.body.scrollTop / 1250; // used in for loop, assigned outside of it for increased performance
+    for (var i = 0, len = items.length; i < len; i++) { // assigning the length to a variable increases performance
+      var phase = Math.sin(scrollNumber + (i % 5));
+      items[i].style.left = items[i].basicLeft + 100 * phase + 'px';   }
 
-  for (var i = 0, len = items.length; i < len; i++) { // assigning the length to a variable increases performance
-    var phase = Math.sin(scrollNumber + (i % 5));
-    items[i].style.left = items[i].basicLeft + 100 * phase + 'px';   }
-
-  // User Timing API to the rescue again. Seriously, it's worth learning.
-  // Super easy to create custom metrics.
-  window.performance.mark("mark_end_frame");
-  window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
-  if (frame % 10 === 0) {
-    var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
-    logAverageFrame(timesToUpdatePosition);
+    // User Timing API to the rescue again. Seriously, it's worth learning.
+    // Super easy to create custom metrics.
+    window.performance.mark("mark_end_frame");
+    window.performance.measure("measure_frame_duration", "mark_start_frame", "mark_end_frame");
+    if (frame % 10 === 0) {
+      var timesToUpdatePosition = window.performance.getEntriesByName("measure_frame_duration");
+      logAverageFrame(timesToUpdatePosition);
+    }
   }
-}
 
 // runs updatePositions on scroll
 window.addEventListener('scroll', onScroll);
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 6; // reduced number of columns for extra performance
-  var s = 400; // reduced number of instanced for extra performance
+  var cols = 8; // reduced number of columns for extra performance
+  var s = 256; // reduced number of instanced for extra performance
   for (var i = 0; i < 100; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
