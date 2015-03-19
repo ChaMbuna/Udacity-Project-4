@@ -511,26 +511,29 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // so it does not need to be calculated each time the function runs.
 var lastKnownScrollY = 0;
 
-// stores trigger used to perform one frame update.
-var scrolling = false;
-
 // requests one scroll from last known scroll position.
+// position is no longer calculated with every scroll and for every pizza as in original function
 function onScroll() {
 	lastKnownScrollY = window.scrollY;
     requestScroll();
 }
 
+// stores trigger used to perform one frame update.
+var scrolling = false;
+
+// this function eliminates the constant recalculation of the screen that was going on.
+// it sets the scrolling variable to true, the updatefunction will set it to false again so it only runs once per scroll.
 function requestScroll() {
   if(!scrolling) {
     requestAnimationFrame(updatePositions);
   }
-  scrolling = true;
+  scrolling = true; // tell the function we are now scrolling
 }
 
 
 // updates pizza positions
 function updatePositions() {
-    scrolling = false;
+    scrolling = false; // tell requestScroll function we are done scrolling
     frame++;
     window.performance.mark("mark_start_frame");
 
@@ -555,8 +558,9 @@ function updatePositions() {
 window.addEventListener('scroll', onScroll);
 // Generates the sliding pizzas when the page loads.
 document.addEventListener('DOMContentLoaded', function() {
-  var cols = 8; // reduced number of columns for extra performance
-  var s = 256; // reduced number of instanced for extra performance
+  var cols = 8;
+  var s = 256;
+  // removed pizzas rendered off-screen for extra performance
   for (var i = 0; i < 100; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
